@@ -26,11 +26,15 @@ def main():
                 print(f"От меня для: {event.user_id}")
             else:
                 print(f"Для меня от: {event.user_id}")
-                vk.messages.send(
-                    user_id=event.user_id,
-                    message=get_dialogflow_response(project_id, str(event.user_id), event.text),
-                    random_id=0,
+                reply, is_fallback = get_dialogflow_response(
+                    project_id, str(event.user_id), event.text
                 )
+                if not is_fallback:
+                    vk.messages.send(
+                        user_id=event.user_id,
+                        message=reply,
+                        random_id=0,
+                    )
             print(f"Текст: {event.text}")
 
 

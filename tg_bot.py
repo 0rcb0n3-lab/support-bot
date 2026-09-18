@@ -34,7 +34,7 @@ async def main() -> None:
 
     @dp.message()
     async def dialogflow_reply(message: Message) -> None:
-        reply = get_dialogflow_response(
+        reply, _ = get_dialogflow_response(
             project_id,
             str(message.from_user.id),
             message.text,

@@ -12,4 +12,5 @@ def get_dialogflow_response(project_id: str, session_id: str, text: str, languag
         request={"session": session, "query_input": query_input}
     )
 
-    return response.query_result.fulfillment_text
+    result = response.query_result
+    return result.fulfillment_text, result.intent.is_fallback
