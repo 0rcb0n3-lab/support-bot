@@ -1,0 +1,15 @@
+[Unit]
+Description=VK support bot (DialogFlow)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/support-bot
+EnvironmentFile=/opt/support-bot/.env
+ExecStart=/opt/support-bot/.venv/bin/python vk_bot.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
