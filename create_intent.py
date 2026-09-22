@@ -1,3 +1,4 @@
+import argparse
 import json
 import os
 
@@ -26,21 +27,37 @@ def create_intent(project_id, display_name, training_phrases_parts, message_text
         messages=[message],
     )
 
-    response = intents_client.create_intent(
+    intents_client.create_intent(
         request={"parent": parent, "intent": intent}
     )
 
-    print(f"Intent created: {response.display_name}")
+
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description="Создаёт интенты Dialogflow из JSON-файла"
+    )
+    parser.add_argument(
+        "--intents-file",
+        help="путь к JSON-файлу с данными об интентах (переопределяет INTENTS_FILE из .env)",
+    )
+    parser.add_argument(
+        "--config",
+        default=".env",
+        help="путь к файлу конфигурации (по умолчанию: .env)",
+    )
+    return parser.parse_args()
 
 
-if __name__ == "__main__":
+def main(args):
     env = Env()
-    env.read_env()
+    env.read_env(args.config)
 
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = env.str("GOOGLE_APPLICATION_CREDENTIALS")
     project_id = env.str("DIALOGFLOW_PROJECT_ID")
 
-    with open("training_phrases.json", "r", encoding="utf-8") as file:
+    intents_file = args.intents_file or env.str("INTENTS_FILE", "training_phrases.json")
+
+    with open(intents_file, "r", encoding="utf-8") as file:
         training_phrases = json.load(file)
 
     for intent_name, phrases in training_phrases.items():
@@ -50,3 +67,8 @@ if __name__ == "__main__":
             training_phrases_parts=phrases["questions"],
             message_texts=phrases["answer"],
         )
+        print(f"Intent created: {intent_name}")
+
+
+if __name__ == "__main__":
+    main(parse_args())
