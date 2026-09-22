@@ -13,7 +13,7 @@
 - `tg_bot.py` — Telegram-бот на `aiogram` 3 (long polling);
 - `vk_bot.py` — бот ВКонтакте на `vk-api` (Long Poll API ВКонтакте);
 - `dialogflow_handler.py` — общий модуль для запросов к DialogFlow (используется обоими ботами);
-- `create_intent.py` + `training_phrases.json` — скрипт для наполнения базы знаний DialogFlow тренировочными фразами и ответами.
+- `create_intent.py` + `training_phrases.json` — скрипт для наполнения базы знаний DialogFlow тренировочными фразами и ответами (запуск: `python create_intent.py`; путь к данным берётся из `INTENTS_FILE`, можно переопределить через `--intents-file` и `--config`).
 
 В базе знаний сейчас один интент — «Устройство на работу» («Как устроиться к вам?», «Хочу работать у вас» и т.п.).
 
@@ -63,7 +63,8 @@ pip install -r requirements.txt
 - `TG_CHAT_ID` — ваш Telegram id, туда будут приходить ошибки;
 - `VK_GROUP_TOKEN` — токен группы ВК;
 - `GOOGLE_APPLICATION_CREDENTIALS=credentials.json` — путь (относительно каталога проекта) до ключа DialogFlow;
-- `DIALOGFLOW_PROJECT_ID`.
+- `DIALOGFLOW_PROJECT_ID`;
+- `INTENTS_FILE=training_phrases.json` — путь к файлу с тренировочными фразами (опционально, для скрипта `create_intent.py`);
 
 Установите systemd-юниты:
 
