@@ -56,7 +56,7 @@ async def main() -> None:
         try:
             reply, _ = get_dialogflow_response(
                 project_id,
-                str(message.from_user.id),
+                f"tg-{message.from_user.id}",
                 message.text,
                 "ru-RU",
             )

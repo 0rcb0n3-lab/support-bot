@@ -18,7 +18,7 @@ RETRY_DELAY_SECONDS = 5
 
 def send_reply(vk, project_id, user_id, text):
     try:
-        reply, is_fallback = get_dialogflow_response(project_id, str(user_id), text)
+        reply, is_fallback = get_dialogflow_response(project_id, f"vk-{user_id}", text)
     except Exception:
         logger.exception("Ошибка при обработке сообщения от %s", user_id)
     else:
