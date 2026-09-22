@@ -13,6 +13,8 @@ from tg_logging import TelegramLogsHandler
 
 logger = logging.getLogger(__name__)
 
+RETRY_DELAY_SECONDS = 5
+
 
 async def main() -> None:
     env = Env()
@@ -64,11 +66,12 @@ async def main() -> None:
             if reply:
                 await message.answer(reply)
 
-    try:
-        await dp.start_polling(bot)
-    except Exception:
-        logger.exception("Бот упал, перезапуск")
-        raise
+    while True:
+        try:
+            await dp.start_polling(bot)
+        except Exception:
+            logger.exception("Бот упал, перезапуск")
+            await asyncio.sleep(RETRY_DELAY_SECONDS)
 
 
 if __name__ == "__main__":
